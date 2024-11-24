@@ -1,0 +1,7 @@
+stages:
+  - shell
+
+Print Output B:
+  stage: shell
+  script: |
+    echo "Printing Output for Pipeline B"

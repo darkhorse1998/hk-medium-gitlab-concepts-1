@@ -1,0 +1,35 @@
+stages:
+  - triggers
+  - test1
+  - test2
+
+trigger-pipeline-a:
+  stage: triggers
+  trigger:
+    include:
+      - local: a.yml
+    strategy: depend
+  rules:
+    - when: on_success
+    - if: $CI_COMMIT_BRANCH == "main"
+
+trigger-pipeline-b:
+  stage: triggers
+  trigger:
+    include:
+      - local: b.yml
+    strategy: depend
+  rules:
+    - when: on_success
+    - needs: [trigger-pipeline-a]
+
+error job:
+  stage: test1
+  script:
+    - exit 1
+
+always run this job:
+    stage: test2
+    when: always
+    script:
+      - echo "Always run this job"
